@@ -1,4 +1,5 @@
 var assert = require('assert');
+var path = require('path');
 var run    = require('./helpers').runMocha;
 
 describe('regressions', function() {
@@ -18,6 +19,15 @@ describe('regressions', function() {
       assert.equal(occurences('testbody3'), 1);
 
       assert.equal(res.code, 1);
+      done();
+    });
+  });
+
+  it('issue-1794: Can\'t --require custom UI and use it', function(done) {
+    var simpleUiPath = path.join(__dirname, 'fixtures', 'regression', '1794', 'simple-ui.js');
+    var args = ['--require', simpleUiPath, '--ui', 'simple-ui'];
+    run('regression/1794/issue-1794.js', args, function(err, res) {
+      assert.equal(res.code, 0, 'Custom UI should be loaded');
       done();
     });
   });
